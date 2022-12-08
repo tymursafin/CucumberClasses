@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 
 public class DashboardSteps {
 
-    WebDriver driver;
     @Then("user is successfully logged in")
     public void user_is_successfully_logged_in() {
         System.out.println("OK");
