@@ -31,3 +31,16 @@ Feature: Add Employee
         | Mulikanu  | Nuzharu   |
         | Likeerua  | Zanurtash |
         | Moonkhan  | Marsee    |
+
+  @datatable
+  Scenario: Adding multiple employees using data table
+    When user adds multiple employees and verify they are added successfully
+      |firstName|middleName|lastName  |
+      |zarabut  |MS        |camiluslah|
+      |birgules |MS        |ozginar   |
+      |alinakot |MS        |bobus     |
+
+
+  @excel
+  Scenario: Adding multiple employees using excel file
+    When user adds multiple employee from excel using "EmployeeData" and verify it

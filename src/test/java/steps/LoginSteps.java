@@ -3,20 +3,15 @@ package steps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import pages.LoginPage;
 import utils.CommonMethods;
 import utils.ConfigReader;
 
-import java.util.concurrent.TimeUnit;
-
 public class LoginSteps extends CommonMethods {
 
-//    WebDriver driver;
+    //    WebDriver driver;
     @Given("user is navigated to HRMS application")
     public void user_is_navigated_to_hrms_application() {
         openBrowserAndLaunchApplication();
@@ -50,7 +45,7 @@ public class LoginSteps extends CommonMethods {
         WebElement userName = driver.findElement(By.xpath("//input[@id = 'txtUsername']"));
         sendText(userName, "asmahuma321");
         WebElement password = driver.findElement(By.xpath("//input[@id = 'txtPassword']"));
-        sendText(password,"Hum@nhrm123");
+        sendText(password, "Hum@nhrm123");
     }
 
     @When("user enters invalid username and password")
@@ -58,7 +53,7 @@ public class LoginSteps extends CommonMethods {
         WebElement userName = driver.findElement(By.xpath("//input[@id = 'txtUsername']"));
         sendText(userName, "admin123");
         WebElement password = driver.findElement(By.xpath("//input[@id = 'txtPassword']"));
-        sendText(password,"Hum@nhrm123");
+        sendText(password, "Hum@nhrm123");
     }
 
     @Then("error message displayed")
@@ -76,4 +71,13 @@ public class LoginSteps extends CommonMethods {
         }
     }
 
+    @When("user enters different {string} and {string} and verify the {string} for it")
+    public void user_enters_different_and_and_verify_the_for_it(String username, String password, String errorMessage) {
+        sendText(loginPage.usernameTextField, username);
+        sendText(loginPage.passwordTextField, password);
+        click(loginPage.loginButton);
+
+        String errorActual = loginPage.errorMessage.getText();
+        Assert.assertEquals(errorMessage, errorActual);
+    }
 }
