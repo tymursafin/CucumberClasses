@@ -3,8 +3,11 @@ package steps;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.asserts.SoftAssert;
+import pages.EmployeeListPage;
 import utils.CommonMethods;
 import utils.Constants;
 import utils.ExcelReader;
@@ -84,9 +87,9 @@ public class AddEmployeeSteps extends CommonMethods {
 
         List<Map<String, String>> empFromExcel = ExcelReader.excelListIntoMap(Constants.TESTDATA_FILEPATH, sheetName);
 
-
         //it returns one map from list of maps
         Iterator<Map<String, String>> itr = empFromExcel.iterator();
+
         while (itr.hasNext()) {
             //it returns the key and value for employee from excel
             Map<String, String> mapNewEmp = itr.next();
@@ -94,21 +97,47 @@ public class AddEmployeeSteps extends CommonMethods {
             sendText(addEmployeePage.firstNameField, mapNewEmp.get("firstName"));
             sendText(addEmployeePage.middleNameField, mapNewEmp.get("middleName"));
             sendText(addEmployeePage.lastNameField, mapNewEmp.get("lastName"));
+            String empIdValue = addEmployeePage.empIdLocator.getAttribute("value");
 
             sendText(addEmployeePage.photo, mapNewEmp.get("photo"));
 
             if (!addEmployeePage.checkBox.isSelected()) {
                 click(addEmployeePage.checkBox);
             }
-
             sendText(addEmployeePage.createUsernameField, mapNewEmp.get("username"));
             sendText(addEmployeePage.createPasswordField, mapNewEmp.get("password"));
             sendText(addEmployeePage.confirmPasswordField, mapNewEmp.get("confirmPassword"));
 
             click(addEmployeePage.saveButton);
-
             //verification is in home-work
+            Thread.sleep(3000);
+
+            click(dashboardPage.empListOption);
             Thread.sleep(2000);
+
+            //to search the employee, we use emp id what we captured from attribute
+            sendText(employeeListPage.empSearchIdField, empIdValue);
+            click(employeeListPage.searchButton);
+
+            //verifying the employee added from the excel file
+
+            List<WebElement> rowData =
+                    driver.findElements(By.xpath("//*[@id='resultTable']/tbody/tr"));
+
+
+            for (int i =0; i<rowData.size(); i++){
+                //getting the text of every element from here and storing it into string
+                String rowText = rowData.get(i).getText();
+                System.out.println(rowText);
+
+                String expectedData = empIdValue + " " + mapNewEmp.get("firstName")
+                        + " " + mapNewEmp.get("middleName") + " " + mapNewEmp.get("lastName");
+
+                //verifying the exact details  of the employee
+                Assert.assertEquals(expectedData, rowText);
+
+            }
+
             click(dashboardPage.addEmployeeOption);
             Thread.sleep(2000);
         }

@@ -5,7 +5,7 @@ Feature: US-321 Searching the employee
     And user clicks on login button
     Then user is successfully logged in
     When user clicks on PIM option
-    And user clicks on Employee List option
+    #And user clicks on Employee List option
 
   @sprint4 @test1
   Scenario: Search employee by ID

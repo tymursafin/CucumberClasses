@@ -21,6 +21,7 @@ Feature: Add Employee
     And user clicks on save button
     Then employee added successfully
 
+    # Scenario Outline will execute code as many times as many lines of data we have (3 times here)
     @outline @regression @test3
     Scenario Outline: Adding multiple employees using feature file
       And user enters "<firstName>" and "<lastName>" for adding multiple employees
@@ -35,10 +36,10 @@ Feature: Add Employee
   @datatable
   Scenario: Adding multiple employees using data table
     When user adds multiple employees and verify they are added successfully
-      |firstName|middleName|lastName  |
-      |zarabut  |MS        |camiluslah|
-      |birgules |MS        |ozginar   |
-      |alinakot |MS        |bobus     |
+      | firstName  | middleName |  lastName   |
+      | zarabut    | MS         |  camiluslah |
+      | birgules   | MS         |  ozginar    |
+      | alinakot   | MS         |  bobus      |
 
 
   @excel
